@@ -1,0 +1,20 @@
+{
+  "name": "xenon",
+  "version": "1.0.0",
+  "description": "> A working title",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc game.ts",
+    "start": "npm run build && node game.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "typescript": "^3.5.3"
+  },
+  "devDependencies": {
+    "@types/node": "^12.6.8"
+  }
+}
