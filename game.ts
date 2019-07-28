@@ -102,7 +102,7 @@ async function main () {
   if (gameState.player) {
     console.log('Game Loaded')
   } else {
-    let player = new Player('Jake', 10)
+    let player = new Player('Player', 10)
     gameState.addObject(player)
     console.log(`Created ${player.name} with ${player.health} health.`)
   }
