@@ -1,13 +1,19 @@
+import { GameState } from "./GameState";
+
 export interface GameObject {
   name: string;
   health: number;
+  gameState: GameState;
   inspect(): string;
+  toJSON(): any;
 }
 
 export class Thing implements GameObject {
   name: string;
   health: number;
-  constructor(name: string, health: number) {
+  gameState: GameState;
+  constructor(gameState: GameState, name: string, health: number) {
+    this.gameState = gameState
     this.name = name
     this.health = health
   }
@@ -27,8 +33,22 @@ export class Thing implements GameObject {
     return `${this.name} has ${this.health} health.`
   }
 
+  /**
+   * Removes the object from its GameState
+   */
   kill () {
     console.info(`${this.name} has died of its wounds.`)
+    this.gameState.destroy(this)
+  }
+
+  /**
+   * Allows us to only serialize the things we need
+   */
+  toJSON () {
+    return {
+      name: this.name,
+      health: this.health
+    }
   }
 }
 

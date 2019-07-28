@@ -7,7 +7,7 @@ let rl;
 
 function CharacterSpawner (args: any[]) {
   var newInstance = Object.create(Character.prototype);
-  newInstance.constructor.apply(newInstance, args);
+  newInstance.constructor.apply(newInstance, [gameState, ...args]);
   return newInstance;
 }
 
@@ -26,9 +26,11 @@ const commands = {
   inspect: {
     fn: (...args) => {
       let name:string = args.join(' ')
-      let object = gameState.objects.find(item => item.name === name)
-      if (object) {
-        console.log(object.inspect())
+      let objects = gameState.objects.filter(item => item.name === name)
+      if (objects.length > 0) {
+        for (let object of objects) {
+          console.log(object.inspect())
+        }
       } else {
         console.log(`Could not find ${name}, try using 'look' to see what is around you.`)
       }
@@ -102,7 +104,7 @@ async function main () {
   if (gameState.player) {
     console.log('Game Loaded')
   } else {
-    let player = new Player('Player', 10)
+    let player = new Player(gameState, 'Player', 10)
     gameState.addObject(player)
     console.log(`Created ${player.name} with ${player.health} health.`)
   }

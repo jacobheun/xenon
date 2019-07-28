@@ -18,6 +18,13 @@ export class GameState {
     }
   }
 
+  destroy (object: GameObject) {
+    let index = this.objects.indexOf(object)
+    if (index >= 0) {
+      this.objects.splice(index, 1)
+    }
+  }
+
   async save () {
     await fs.promises.mkdir(path.dirname(SavePath), { recursive: true })
     await fs.promises.writeFile(path.resolve(SavePath), this.serialize())
@@ -36,10 +43,10 @@ export class GameState {
   private deserialize (data: Buffer) {
     let state: GameState = JSON.parse(data.toString())
     for (let object of state.objects) {
-      this.objects.push(new Character(object.name, object.health))
+      this.objects.push(new Character(this, object.name, object.health))
     }
     if (state.player) {
-      this.player = new Player(state.player.name, state.player.health)
+      this.player = new Player(this, state.player.name, state.player.health)
     }
   }
 
