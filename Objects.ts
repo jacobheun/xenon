@@ -1,6 +1,7 @@
 export interface GameObject {
   name: string;
   health: number;
+  inspect(): string;
 }
 
 export class Thing implements GameObject {
@@ -22,6 +23,10 @@ export class Thing implements GameObject {
     }
   }
 
+  inspect () {
+    return `${this.name} has ${this.health} health.`
+  }
+
   kill () {
     console.info(`${this.name} has died of its wounds.`)
   }
@@ -31,7 +36,6 @@ export class Character extends Thing {
   attack (target: Character) {
     target.hit(1)
   }
-
 }
 
 export class Player extends Character {}
