@@ -1,9 +1,18 @@
 import { GameState } from "./GameState"
 import { Player } from "./Objects"
 
+let gameState: GameState;
+
+function gameLoop () {
+  setTimeout(gameLoop, 0)
+}
+
 async function main () {
+  process.on('SIGTERM', save('SIGTERM'))
+  process.on('SIGINT', save('SIGINT'))
+
   console.log('Loading Game State...')
-  let gameState = new GameState()
+  gameState = new GameState()
   await gameState.load()
 
   if (gameState.player) {
@@ -14,9 +23,16 @@ async function main () {
     console.log(`Created ${player.name} with ${player.health} health.`)
   }
 
-  console.log('Saving Game...')
-  await gameState.save()
-  console.log('Add done, bye bye')
+  gameLoop()
+}
+
+function save (signal: NodeJS.Signals) {
+  return async () => {
+    console.log(`\nSaving game...`)
+    await gameState.save()
+    console.log('All done, bye bye')
+    process.exit(0)
+  }
 }
 
 (async () => {
